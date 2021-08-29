@@ -1,5 +1,6 @@
 <?php
 require_once('../config.php');
+require_once(baseLink.'functions/validations.php');
 
 
 $current_url = urlencode($url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
@@ -20,6 +21,8 @@ $current_url = urlencode($url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_
 
 <body>
 
+   
+
     <h1 align="center">Admin Panel </h1>
 
     <?php
@@ -30,6 +33,7 @@ $current_url = urlencode($url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_
 //new product list
 $results = $mysqli->query("SELECT product_code, product_name, product_img_name, price FROM products ORDER BY id ASC");
 ?>
+
     <table>
         <thead>
             <tr>
@@ -51,7 +55,7 @@ $results = $mysqli->query("SELECT product_code, product_name, product_img_name, 
         <tr>
             <td><?=$row['product_name']?></td>
             <td><?='<img src="'.baseUrl.'images/'.$row['product_img_name'].'">'?></td>
-            <td><a href="update.php?id=<?=$row['product_code']?>">Update Product</a>  | <a
+            <td><a href="update.php?id=<?=$row['product_code']?>">Update Product</a> | <a
                     href="delete.php?id=<?=$row['product_code']?>">Delete Product</a></td>
 
 
@@ -64,21 +68,25 @@ $results = $mysqli->query("SELECT product_code, product_name, product_img_name, 
 		?>
         <tfoot>
             <tr>
-                <td colspan = "1" style = "text-align: center"><?=mysqli_num_rows($results)?> Product
+                <td colspan="1" style="text-align: center"><?=mysqli_num_rows($results)?> Product
                 </td>
-				<td style = "text-align: center"><a href="<?=baseUrl;?>admin/add_product.php">Add New Product</a></td>
+                <td style="text-align: center"><a href="<?=baseUrl;?>admin/add_product.php">Add New Product</a></td>
             </tr>
         </tfoot>
     </table>
+
+
     <?php
+    /*
 //Products List
 
 $result = $mysqli->query("SELECT product_code, product_name, product_img_name, price FROM products ORDER BY id ASC");
 if($result){
 $products_item = '<ul class="products">';
+$url = baseUrl;
+
 while($obj = $result->fetch_object())
 {
-$url = baseUrl;
 $products_item .= <<<EOT
 	<li class="product">
 	<form method="post" action="cart_update.php">
@@ -113,12 +121,13 @@ EOT;
 $products_item .= '</ul>';
 echo $products_item;
 }
-?>
+
     <div align="center" ; background-color:white><button type="button" class="add_to_cart">Add New Product</button>
     </div>
 
 
-
+*/
+?>
 </body>
 
 </html>

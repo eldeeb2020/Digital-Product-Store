@@ -1,5 +1,6 @@
 <?php
 require_once('../config.php');
+require_once(baseLink.'functions/validations.php');
 
 ?>
 <!DOCTYPE html>
@@ -8,7 +9,7 @@ require_once('../config.php');
 <head>
     <meta charset="utf-8">
 
-    <title>signUp form</title>
+    <title>add product</title>
 
     <style>
     body {
@@ -113,26 +114,52 @@ require_once('../config.php');
 </head>
 
 <body>
-    <?php 
     
-if (isset($_GET['error'])){ //check if there is error
-	$error_message = $_GET['error'];
-}
+     <?php
+     if (isset($_POST['submit'])){
+         //$message = array();
+         extract($_POST);
+         if (checkEmpty($product_code) and checkEmpty($product_name) and checkEmpty($product_img_name) and checkEmpty($price))
+         {
+             require_once(baseLink.'functions/database.php');
+             //Escape any speciale characacters to avoid SQL injection. 
+             $product_code = mysqli_escape_string($conn, $product_code);
+             $product_name = mysqli_escape_string($conn, $product_name);
+             $product_img_name = mysqli_escape_string($conn, $product_img_name);
+             $price = mysqli_escape_string($conn, $price);
+
+     
+             $query="INSERT INTO products(product_code, product_name,product_img_name, price) VALUES ('$product_code', '$product_name', '$product_img_name', '$price')";
+             $sql=mysqli_query($conn,$query)or die("Could Not Perform the Query");
+
+             header ("Location: admin.php?status=success");
+     
+         }
+         else{
+             
+             $error_message = 'Please Fill The Form';
+             
+         }
+         
+     
+     
+     }
+
 ?>
     <div class="signup-form">
         <h2>Add New Product</h2>
-        <form method="post">
+        <form  action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
             <?php
 		  require_once(baseLink.'functions/messages.php')?>
             <h2>Add</h2>
             <p>fill this form to add new product!</p>
             <hr>
             <div class="form-group">
-                <div class="col-xs-6"><input type="text" class="form-control" name="product-code"
+                <div class="col-xs-6"><input type="text" class="form-control" name="product_code"
                         placeholder="Product Code"></div>
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" name="product-name" placeholder="Product Name">
+                <input type="text" class="form-control" name="product_name" placeholder="Product Name">
             </div>
             <div class="form-group">
                 <input type="text" class="form-control" name="product_img_name" placeholder="Product Img Name">
@@ -142,7 +169,7 @@ if (isset($_GET['error'])){ //check if there is error
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-lg">Add</button>
+                <button type="submit" name = "submit" class="btn btn-primary btn-lg">Add</button>
             </div>
         </form>
     </div>

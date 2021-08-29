@@ -1,19 +1,13 @@
 <?php
-function checkEmpty($var){
-    if (empty($var)){
-        return false;
-    }
-    else {
-        return true;
-    }
-}
+require_once('../config.php');
+require_once(baseLink.'functions/validations.php');
 
 if (isset($_POST)){
     //$message = array();
     extract($_POST);
     if (checkEmpty($email) and checkEmpty($confirm_password) and checkEmpty($name))
     {
-        include("database.php");
+        require_once(baseLink.'functions/database.php');
         //Escape any speciale characacters to avoid SQL injection. 
         $name = mysqli_escape_string($conn, $name);
         $email = mysqli_escape_string($conn, $email);
