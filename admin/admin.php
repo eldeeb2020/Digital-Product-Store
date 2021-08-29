@@ -21,18 +21,30 @@ $current_url = urlencode($url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_
 
 <body>
 
-   
+    <?php    if (isset($_GET['message'])){ 
+              $success_message= $_GET['message'];
 
-    <h1 align="center">Admin Panel </h1>
-
-    <?php
-
-?>
+}
+		  require_once(baseLink.'functions/messages.php')?>
 
     <?php
-//new product list
+
 $results = $mysqli->query("SELECT product_code, product_name, product_img_name, price FROM products ORDER BY id ASC");
+
+if (isset($_GET['search'])){ //for search
+    $search = $_GET['search'];
+    $results = $mysqli->query("SELECT * FROM products WHERE products.product_name LIKE '%".$search."%'");
+}
 ?>
+    <!-- search form-->
+    <h1 align="center">Admin Panel </h1>
+    <form method="GET">
+        <input type="text" name="search" placeholder="enter name to search">
+        <input type="submit" value="search">
+    </form>
+    <!-- end search form-->
+
+    <!--disply list of product -->
 
     <table>
         <thead>
@@ -54,7 +66,7 @@ $results = $mysqli->query("SELECT product_code, product_name, product_img_name, 
 			?>
         <tr>
             <td><?=$row['product_name']?></td>
-            <td><?='<img src="'.baseUrl.'images/'.$row['product_img_name'].'">'?></td>
+            <td><?='<img src="'.baseUrl.'images/'.$row['product_img_name'].'.jpg'.'">'?></td>
             <td><a href="update.php?id=<?=$row['product_code']?>">Update Product</a> | <a
                     href="delete.php?id=<?=$row['product_code']?>">Delete Product</a></td>
 
@@ -74,7 +86,7 @@ $results = $mysqli->query("SELECT product_code, product_name, product_img_name, 
             </tr>
         </tfoot>
     </table>
-
+    <!-- end list -->
 
     <?php
     /*

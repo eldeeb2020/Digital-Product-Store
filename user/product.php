@@ -33,7 +33,7 @@ $current_url = urlencode($url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_
 $results = $mysqli->query("SELECT product_code, product_name, product_img_name, price FROM products ORDER BY id ASC");
 while($row = mysqli_fetch_assoc($results)){
 	echo $row['product_name'];
-	echo '<div class="product-thumb"><img src="'.baseUrl.'images/'.$row['product_img_name'].'"> </div>';
+	echo '<div class="product-thumb"><img src="'.baseUrl.'images/'.$row['product_img_name'].'.jpg'.'"> </div>';
 	echo '<br>';
 	echo '<br>';
 

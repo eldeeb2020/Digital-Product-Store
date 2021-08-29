@@ -131,8 +131,9 @@ require_once(baseLink.'functions/validations.php');
      
              $query="INSERT INTO products(product_code, product_name,product_img_name, price) VALUES ('$product_code', '$product_name', '$product_img_name', '$price')";
              $sql=mysqli_query($conn,$query)or die("Could Not Perform the Query");
-
-             header ("Location: admin.php?status=success");
+             $success_message = 'New Product added successfully';
+             header ("Location: admin.php?message=".$success_message."");
+             exit;
      
          }
          else{
