@@ -21,20 +21,26 @@ $current_url = urlencode($url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_
 
 <body>
 
-    <?php    if (isset($_GET['message'])){ 
-              $success_message= $_GET['message'];
+    <?php    if (isset($_GET['message'])){ //check if there is a message
+              $success_message= $_GET['message']; 
 
 }
-		  require_once(baseLink.'functions/messages.php')?>
+		  ?>
 
     <?php
 
-$results = $mysqli->query("SELECT product_code, product_name, product_img_name, price FROM products ORDER BY id ASC");
+$results = $mysqli->query("SELECT id, product_code, product_name, product_img_name, price FROM products ORDER BY id ASC");
 
-if (isset($_GET['search'])){ //for search
+if (isset($_GET['search'])){ //search function
+    
     $search = $_GET['search'];
-    $results = $mysqli->query("SELECT * FROM products WHERE products.product_name LIKE '%".$search."%'");
+    if (checkEmpty($search)){
+    $results = $mysqli->query("SELECT * FROM  products WHERE products.product_name LIKE '%".$search."%'");
 }
+else{
+    $error_message = 'enter name to search';
+}}
+require_once(baseLink.'functions/messages.php')
 ?>
     <!-- search form-->
     <h1 align="center">Admin Panel </h1>
@@ -45,7 +51,7 @@ if (isset($_GET['search'])){ //for search
     <!-- end search form-->
 
     <!--disply list of product -->
-
+   
     <table>
         <thead>
             <tr>
@@ -67,8 +73,8 @@ if (isset($_GET['search'])){ //for search
         <tr>
             <td><?=$row['product_name']?></td>
             <td><?='<img src="'.baseUrl.'images/'.$row['product_img_name'].'.jpg'.'">'?></td>
-            <td><a href="update.php?id=<?=$row['product_code']?>">Update Product</a> | <a
-                    href="delete.php?id=<?=$row['product_code']?>">Delete Product</a></td>
+            <td><a href="edit.php?id=<?=$row['id']?>">Edit Product</a> | <a
+                    href="delete.php?id=<?=$row['id']?>">Delete Product</a></td>
 
 
         </tr>
@@ -82,6 +88,9 @@ if (isset($_GET['search'])){ //for search
             <tr>
                 <td colspan="1" style="text-align: center"><?=mysqli_num_rows($results)?> Product
                 </td>
+            </tr>
+            
+            <tr>
                 <td style="text-align: center"><a href="<?=baseUrl;?>admin/add_product.php">Add New Product</a></td>
             </tr>
         </tfoot>
